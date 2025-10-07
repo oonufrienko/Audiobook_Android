@@ -120,23 +120,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
       setState(() {
         audiobooks = booksList.map((book) => Audiobook.fromJson(book)).toList();
       });
-    } else {
-      setState(() {
-        audiobooks = [
-          Audiobook(
-            title: 'Кобзар',
-            author: 'Тарас Шевченко',
-            filePath: 'demo',
-            duration: const Duration(hours: 4, minutes: 23),
-          ),
-          Audiobook(
-            title: 'Тіні забутих предків',
-            author: 'Михайло Коцюбинський',
-            filePath: 'demo',
-            duration: const Duration(hours: 2, minutes: 15),
-          ),
-        ];
-      });
     }
   }
 
@@ -745,30 +728,31 @@ class _PlayerScreenState extends State<PlayerScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(35),
+                  padding: const EdgeInsets.all(20), // Уменьшено с 35 до 20
                   decoration: BoxDecoration(
                     color: AppColors.backgroundMedium,
                     borderRadius: BorderRadius.circular(25),
                     border: Border.all(color: AppColors.border, width: 3),
                   ),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         widget.book.title,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontSize: 36,
+                          fontSize: 108, // 3x larger than original 36
                           fontWeight: FontWeight.bold,
                           color: AppColors.textWhite,
-                          height: 1.3,
+                          height: 1.0,
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 5),
                       Text(
                         widget.book.author,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontSize: 28,
+                          fontSize: 20, // Уменьшено с 28 до 18
                           color: AppColors.textWhite70,
                         ),
                       ),
@@ -819,7 +803,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 60),
+                const SizedBox(height: 30), // Оставлено 30, как в предыдущем варианте
                 GestureDetector(
                   onTap: _togglePlayPause,
                   child: Container(
