@@ -102,6 +102,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   List<Audiobook> audiobooks = [];
   bool isEditMode = false;
   int tapCount = 0;
+  DateTime? lastTapTime;
 
   @override
   void initState() {
@@ -286,10 +287,25 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   void _handleLockTap() {
     setState(() {
-      tapCount++;
-      if (tapCount >= 3) {
-        isEditMode = !isEditMode;
+      final now = DateTime.now();
+      if (isEditMode) {
+        // Single tap to lock
+        isEditMode = false;
         tapCount = 0;
+        lastTapTime = null;
+      } else {
+        // Triple tap to unlock within 3 seconds
+        if (lastTapTime == null || now.difference(lastTapTime!).inSeconds > 3) {
+          tapCount = 1;
+          lastTapTime = now;
+        } else {
+          tapCount++;
+          if (tapCount >= 3) {
+            isEditMode = true;
+            tapCount = 0;
+            lastTapTime = null;
+          }
+        }
       }
     });
   }
@@ -346,8 +362,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
               backgroundColor: Colors.transparent,
               elevation: 10,
               child: Container(
-                width: 80,
-                height: 80,
+                width: 120, // 1.5x larger
+                height: 120, // 1.5x larger
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [AppColors.buttonBlue, AppColors.buttonBlueDark],
@@ -365,7 +381,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 ),
                 child: const Icon(
                   Icons.add,
-                  size: 40,
+                  size: 60, // 1.5x larger
                   color: AppColors.textWhite,
                   weight: 800,
                 ),
@@ -376,15 +392,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
         padding: const EdgeInsets.all(20.0),
         child: audiobooks.isEmpty
             ? Container(
-                color: Colors.white,
+                color: AppColors.backgroundDark,
                 child: const Center(
                   child: Text(
                     'Книг у бібліотеці немає',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 64, // 2x larger
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: AppColors.textWhite,
                     ),
                   ),
                 ),
@@ -477,26 +493,26 @@ class BookCard extends StatelessWidget {
                   Text(
                     book.title,
                     style: const TextStyle(
-                      fontSize: 32,
+                      fontSize: 96, // 3x larger
                       fontWeight: FontWeight.bold,
                       color: AppColors.textWhite,
                       height: 1.3,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16), // Adjusted spacing
                   Text(
                     book.author,
                     style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 20, // Slightly smaller
                       color: AppColors.textWhite70,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16), // Adjusted spacing
                   if (book.duration.inMinutes > 0)
                     Text(
                       '⏱️ ${_formatDuration(book.duration)}',
                       style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 18, // Slightly smaller
                         color: AppColors.textWhite60,
                       ),
                     ),
@@ -809,7 +825,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   child: Container(
                     width: 300,
                     height: 150,
-                    decoration: BoxDecoration( // Removed 'const' here
+                    decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [
                           AppColors.buttonBlue,
