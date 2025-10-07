@@ -295,7 +295,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         lastTapTime = null;
       } else {
         // Triple tap to unlock within 3 seconds
-        if (lastTapTime == null || now.difference(lastTapTime!).inSeconds > 3) {
+        if (lastTapTime == null || now.difference(lastTapTime!).inSeconds > 2) {
           tapCount = 1;
           lastTapTime = now;
         } else {
