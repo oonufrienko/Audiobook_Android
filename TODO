@@ -1,5 +1,9 @@
 1. Make always horizontally oriented app
+
 2. Make cut book name and three dots if it has longiness 
    over 12 symbols on the player screen.
+
 3. While App is running make android system buttons disabled unless user 
    press 5 times home button within 3 seconds
+
+4. Volume increase by finger gesture up <- Need to think is it worth to implement ?
